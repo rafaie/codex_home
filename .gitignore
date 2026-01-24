@@ -1,0 +1,12 @@
+log/
+sessions/
+temp/
+tmp/
+
+
+auth.json
+history.jsonl
+models_cache.json
+version.json
+.DS_Store
+config.toml
