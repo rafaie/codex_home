@@ -6,7 +6,8 @@ argument-hint: NONE
 You are working in this repository.
 
 First, read:
-- AGENTS.md
+- AGENTS.md (project repo)
+- codex.toml (if exists, to override commands)
 - docs/index.md (if exists)
 
 Then:

@@ -3,7 +3,7 @@ name: feature-kickoff
 description: Create a feature spec under spec/features/ (and ADR if needed).
 ---
 
-1) Read `AGENTS.md` (repo root) and follow its conventions and commands.
+1) Read project `AGENTS.md` (repo root) and `codex.toml` (if present) and follow their conventions and commands.
 2) Collect inputs: Feature ID (F-XXXX), title, goal, constraints.
 3) Create `spec/features/F-XXXX-<slug>.md`:
    - Prefer `spec/templates/feature.md` if present.

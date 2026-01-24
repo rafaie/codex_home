@@ -3,9 +3,9 @@ name: implement-feature
 description: Implement a feature end-to-end based on its spec/features file.
 ---
 
-1) Read `AGENTS.md` and the target `spec/features/F-XXXX-...md`.
+1) Read project `AGENTS.md`, `codex.toml` (if present), and the target `spec/features/F-XXXX-...md`.
 2) Convert acceptance criteria into a checklist.
-3) Implement iteratively:
+3) Implement iteratively (respect `codex.toml` command overrides if present):
    - Make the smallest code change to satisfy one criterion
    - Add/adjust tests
    - Run `uv run pytest -q`
