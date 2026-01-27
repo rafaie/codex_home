@@ -1,6 +1,6 @@
-# Codex Home Docs
+# Codex Home Spec Index
 
-This is the documentation index for my global Codex home (`~/.codex`).
+This is the spec index for my global Codex home (`~/.codex`).
 It explains how to use prompts and skills across projects.
 
 ## Quick usage

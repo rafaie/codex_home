@@ -9,7 +9,7 @@
 
 ## Conventions (edit for your repo)
 - Specs: `spec/features/` and `spec/decisions/`
-- Docs: `docs/`
+- Project docs: `spec/` (index, brief, architecture, changelog)
 - Tests: `tests/`
 
 ## Commands

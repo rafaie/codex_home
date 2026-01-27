@@ -1,9 +1,9 @@
-# docs/index.md (starter)
+# spec/index.md (starter)
 
 ## Start here
-- Project brief: docs/brief.md
+- Project brief: spec/brief.md
 - Quickstart: README.md
-- Architecture: docs/architecture.md
+- Architecture: spec/architecture.md
 - Backlog: spec/backlog.md
 - Decisions (ADRs): spec/decisions/
 

@@ -9,7 +9,7 @@ other project repositories.
 - If the target repo has its own `AGENTS.md`, follow it first.
 - If the target repo has a local `codex.toml`, use its command overrides.
 - If there is no local `codex.toml`, use the defaults described below.
-- Do not add `spec/` or `docs/` here; those live in each project repo.
+- Do not add project artifacts here; those live in each project repo under `spec/`.
 
 ## Default command assumptions (override per project)
 When prompts/skills mention tests or checks and no local override exists,

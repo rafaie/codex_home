@@ -22,4 +22,4 @@
 ## Links
 - Spec:
 - PR:
-- Docs:
+- Spec index:

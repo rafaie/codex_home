@@ -21,7 +21,7 @@ It includes:
 - `prompts/*.md`  
   Your original lifecycle prompts.
 - `templates/`  
-  Starter templates for `AGENTS.md`, `codex.toml`, `docs/index.md`, `docs/architecture.md`, feature spec & ADR templates.
+  Starter templates for `AGENTS.md`, `codex.toml`, `spec/index.md`, `spec/architecture.md`, feature spec & ADR templates.
 - `repo_starter/`  
   A “copy‑into‑repo” starter that places everything in repo-friendly locations (including `.codex/skills`).
 
@@ -67,11 +67,11 @@ Use `$release-prep` when you’re cutting a release (not necessarily per feature
 
 ### Start / orientation
 - **`session-start`**  
-  Reads `AGENTS.md`, `codex.toml`, and key docs (like `docs/index.md`) and summarizes repo state + suggests the next best features.
+  Reads `AGENTS.md`, `codex.toml`, and key specs (like `spec/index.md`) and summarizes repo state + suggests the next best features.
 
 ### Idea → backlog
 - **`project-intake`**  
-  Turns your “project idea” doc into a crisp **Project Brief** and initializes `docs/index.md` as a living map.
+  Turns your “project idea” doc into a crisp **Project Brief** and initializes `spec/index.md` as a living map.
 - **`backlog-builder`**  
   Converts the brief into a backlog (`spec/backlog.md`) with epics, feature IDs, dependencies, and suggested ordering.
 - **`feature-slicer`**  
@@ -103,17 +103,17 @@ Use `$release-prep` when you’re cutting a release (not necessarily per feature
 - **`docs-update`**  
   Updates user-facing docs, README, changelog entries, and links back to the feature.
 - **`docs-index-refresh`**  
-  Keeps `docs/index.md` accurate as a *living navigation hub* (not “complete”, just correct).
+  Keeps `spec/index.md` accurate as a *living navigation hub* (not “complete”, just correct).
 
 ### Architecture + ADR hygiene
 - **`adr-review`**  
   Creates/updates ADRs when decisions change, links ADRs from the feature spec, and keeps decision records aligned with reality.
 - **`architecture-updater`**  
-  Updates `docs/architecture.md` so architecture stays consistent with ADRs and implementation.
+  Updates `spec/architecture.md` so architecture stays consistent with ADRs and implementation.
 
 ### Closeout + release
 - **`feature-closeout`**  
-  Runs a final feature checklist: tests green, docs/index updated, ADR linked (if needed), spec updated, ready to merge.
+  Runs a final feature checklist: tests green, spec/index updated, ADR linked (if needed), spec updated, ready to merge.
 - **`release-prep`**  
   Runs final checks, compiles release notes, and updates changelog for a release.
 
@@ -122,16 +122,16 @@ Use `$release-prep` when you’re cutting a release (not necessarily per feature
 ## Examples
 
 ### Example A — from idea doc to first implemented feature
-1) Put your idea in `docs/idea.md` (can be messy; bullet points are fine).
+1) Put your idea in `spec/idea.md` (can be messy; bullet points are fine).
 2) Run:
 ```text
 $project-intake
-Use docs/idea.md. Create docs/brief.md and initialize docs/index.md.
+Use spec/idea.md. Create spec/brief.md and initialize spec/index.md.
 ```
 3) Build backlog:
 ```text
 $backlog-builder
-Use docs/brief.md. Create/update spec/backlog.md with 5–15 small features.
+Use spec/brief.md. Create/update spec/backlog.md with 5–15 small features.
 ```
 4) Pick the top feature (e.g., `F-0001`) and clarify:
 ```text
@@ -168,11 +168,11 @@ Here is the failing test output: <paste>
 10) Update docs and index:
 ```text
 $docs-update
-Update README and docs pages for F-0001 and add a changelog entry.
+Update README and spec pages for F-0001 and add a changelog entry.
 ```
 ```text
 $docs-index-refresh
-Update docs/index.md to link F-0001 spec, docs pages, and any ADRs.
+Update spec/index.md to link F-0001 spec, spec pages, and any ADRs.
 ```
 
 ### Example B — when a decision changes (ADR)
@@ -205,7 +205,7 @@ If your repo’s commands differ (e.g., not `uv`/`pytest`), put your canonical l
 
 - **Skill not found:** ensure the skill is under `~/.codex/skills/<name>/SKILL.md` (home) or `.codex/skills/<name>/SKILL.md` (repo).
 - **Skill didn’t follow the workflow:** invoke it explicitly (`$skill-name`) so Codex loads the full instructions.
-- **Docs/index feels “behind”:** treat it as a navigation page. Run `$docs-index-refresh` after each feature.
+- **Spec/index feels “behind”:** treat it as a navigation page. Run `$docs-index-refresh` after each feature.
 
 ---
 

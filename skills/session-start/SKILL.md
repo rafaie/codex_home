@@ -4,7 +4,7 @@ description: Start a work session by summarizing repo state and proposing the to
 ---
 
 1) Read `AGENTS.md` and `codex.toml` if present.
-2) Read `docs/index.md` if it exists, otherwise read `docs/brief.md` if it exists.
+2) Read `spec/index.md` if it exists, otherwise read `spec/brief.md` if it exists.
 3) Check `spec/backlog.md` if it exists.
 4) Summarize current project state in 5–10 bullets.
 5) Propose the top 3 next features (thin vertical slices), each with a one-sentence rationale.

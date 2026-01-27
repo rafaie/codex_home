@@ -8,7 +8,7 @@ You are working in this repository.
 First, read:
 - AGENTS.md (project repo)
 - codex.toml (if exists, to override commands)
-- docs/index.md (if exists)
+- spec/index.md (if exists)
 
 Then:
 0) Ask clarifying questions before continuing, then follow the matching skill.
