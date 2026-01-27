@@ -6,6 +6,7 @@ argument-hint: VERSION=<v0.1.0>
 Prepare a release.
 
 Do:
+0) Ask clarifying questions before continuing, then follow the matching skill.
 1) Ensure all tests/lint/type checks pass:
    - `uv run pytest -q`
    - `uv run ruff check .`

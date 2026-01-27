@@ -9,6 +9,7 @@ Inputs:
 - Error output: $ERROR_OUTPUT
 
 Do:
+0) Ask clarifying questions before continuing, then follow the matching skill.
 1) Reproduce the failure.
 2) Minimize to the smallest cause.
 3) Write a regression test (fails before fix).

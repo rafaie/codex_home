@@ -9,6 +9,7 @@ description: Create a feature spec under spec/features/ (and ADR if needed).
    - Prefer `spec/templates/feature.md` if present.
    - Otherwise use `assets/default_feature_template.md`.
 4) Fill: Problem, Scope, Acceptance Criteria, initial Implementation plan, initial Test plan.
-5) If a major decision is required, create `spec/decisions/ADR-XXXX-<slug>.md` (prefer `spec/templates/adr.md` if present).
-6) Stop after writing specs. Do NOT implement code.
-7) End by listing the next 3 tasks.
+5) If no ADRs exist yet, create `spec/decisions/ADR-0001-initial-architecture.md` (prefer `spec/templates/adr.md` if present).
+6) If a major decision is required, create `spec/decisions/ADR-XXXX-<slug>.md` (prefer `spec/templates/adr.md` if present).
+7) Stop after writing specs. Do NOT implement code.
+8) End by listing the next 3 tasks.

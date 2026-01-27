@@ -1,0 +1,8 @@
+# codex.toml (starter)
+# Replace commands to match your stack. Skills will prefer these commands if present.
+
+[commands]
+test = "uv run pytest -q"
+lint = "uv run ruff check ."
+format_check = "uv run ruff format . --check"
+typecheck = "uv run mypy src"
