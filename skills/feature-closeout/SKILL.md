@@ -1,6 +1,6 @@
 ---
 name: feature-closeout
-description: Finalize a feature: tests green, ADRs captured, docs updated, and spec fully recorded.
+description: Finalize a feature tests green, ADRs captured, docs updated, and spec fully recorded.
 ---
 
 1) Read the feature spec `spec/features/F-XXXX-*.md`.

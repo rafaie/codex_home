@@ -10,3 +10,9 @@ models_cache.json
 version.json
 .DS_Store
 config.toml
+
+# vendor imports
+vendor_imports/
+
+# rules
+rules/
