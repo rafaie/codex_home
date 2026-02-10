@@ -16,3 +16,8 @@ description: Create a feature-level test plan from acceptance criteria and add i
    - Test data/fixtures needed
    - Any required test hooks/utilities
 5) End by recommending `write-tests`.
+   - Output exactly:
+     - `Next recommended skill:`
+     - `Run $write-tests <feature-id> to implement the planned unit/integration/edge-case tests.`
+   - Replace `<feature-id>` with the real ID from the target spec (example: `F1.2`).
+   - Do not use markdown links or absolute file paths in this recommendation.
