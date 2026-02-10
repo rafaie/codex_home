@@ -16,3 +16,9 @@ vendor_imports/
 
 # rules
 rules/
+
+# spec
+spec/
+
+# sqlite
+sqlite/
