@@ -2,7 +2,7 @@
 
 - Status: proposed | accepted | superseded
 - Date: YYYY-MM-DD
-- Related feature(s): F-XXXX
+- Related feature(s): <feature-id> (example: F1.1)
 
 ## Context
 (What problem are we solving? What forces/constraints exist?)

@@ -50,7 +50,7 @@ I want to add a new metric module that computes accuracy and F1 for TOMI. Ask me
 For each feature:
 
 1) **Clarify**: `$qa-intake`  
-2) **Spec**: `$feature-kickoff` (creates/updates `spec/features/F-XXXX-*.md`)  
+2) **Spec**: `$feature-kickoff` (creates/updates `spec/features/<feature-id>-<slug>.md`)  
 3) **Test strategy**: `$test-plan` (writes a test matrix into the spec)  
 4) **Tests**: `$write-tests` (AC → tests, traceable to feature ID)  
 5) **Implement**: `$implement-feature` (AC-by-AC; run checks)  
@@ -133,32 +133,32 @@ Use spec/idea.md. Create spec/brief.md and initialize spec/index.md.
 $backlog-builder
 Use spec/brief.md. Create/update spec/backlog.md with 5–15 small features.
 ```
-4) Pick the top feature (e.g., `F-0001`) and clarify:
+4) Pick the top feature (e.g., `F1.1`) and clarify:
 ```text
 $qa-intake
-Feature F-0001: implement a dataset loader for TOMI with cleaning and a simple CLI entrypoint.
+Feature F1.1: implement a dataset loader for TOMI with cleaning and a simple CLI entrypoint.
 ```
 5) Create the spec:
 ```text
 $feature-kickoff
-Feature ID: F-0001
+Feature ID: F1.1
 Title: TOMI dataset loader + cleaning
 Use the brief above and write the spec.
 ```
 6) Plan tests:
 ```text
 $test-plan
-For F-0001, add a test matrix into the spec and propose minimal fixtures.
+For F1.1, add a test matrix into the spec and propose minimal fixtures.
 ```
 7) Generate tests:
 ```text
 $write-tests
-For F-0001, write tests that map to each acceptance criterion.
+For F1.1, write tests that map to each acceptance criterion.
 ```
 8) Implement:
 ```text
 $implement-feature
-Implement F-0001 AC-by-AC. Run tests as you go.
+Implement F1.1 AC-by-AC. Run tests as you go.
 ```
 9) If something breaks:
 ```text
@@ -168,17 +168,17 @@ Here is the failing test output: <paste>
 10) Update docs and index:
 ```text
 $docs-update
-Update README and spec pages for F-0001 and add a changelog entry.
+Update README and spec pages for F1.1 and add a changelog entry.
 ```
 ```text
 $docs-index-refresh
-Update spec/index.md to link F-0001 spec, spec pages, and any ADRs.
+Update spec/index.md to link F1.1 spec, spec pages, and any ADRs.
 ```
 
 ### Example B — when a decision changes (ADR)
 ```text
 $adr-review
-Feature F-0003 introduced a decision about storage format (JSONL vs Parquet). Create/update an ADR and link it from the feature spec.
+Feature F2.3 introduced a decision about storage format (JSONL vs Parquet). Create/update an ADR and link it from the feature spec.
 ```
 
 ### Example C — large failure burst

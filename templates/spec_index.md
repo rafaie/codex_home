@@ -14,7 +14,7 @@
 
 ## Features
 ### Planned / In progress
-- F-0001 — <title> → spec/features/F-0001-<slug>.md
+- F1.1 — <title> → spec/features/F1.1-<slug>.md
 
 ### Implemented
 - (none yet)

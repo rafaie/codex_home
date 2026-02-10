@@ -1,11 +1,11 @@
 # Backlog
 
 ## Epics
-- E-01: <Epic title>
+- E1: <Epic title>
 
 ## Features
 ### Planned
-- F-0001: <Title>
+- F1.1: <Title>
   - Goal:
   - Rough AC:
   - Dependencies:

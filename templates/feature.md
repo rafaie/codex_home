@@ -1,4 +1,6 @@
-# F-XXXX: <Title>
+# <feature-id>: <Title>
+
+_Feature ID format: `F<epic>.<feature>` (example: `F1.1`)._
 
 ## Goal
 (One sentence.)

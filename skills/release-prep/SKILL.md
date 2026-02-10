@@ -1,6 +1,6 @@
 ---
 name: release-prep
-description: Prepare a release: run checks, update changelog, verify docs, summarize notes.
+description: Prepare a release run checks, update changelog, verify docs, summarize notes.
 ---
 
 1) Read `codex.toml` (if present) for canonical commands.
