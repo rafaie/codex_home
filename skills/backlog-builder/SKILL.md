@@ -7,7 +7,8 @@ description: Convert spec/brief.md into an initial backlog of epics and features
 2) Produce a backlog with:
    - Epics (2–6)
    - Features per epic (3–10), each small enough to ship in 1–2 PRs
-   - Each feature: title, 1–2 sentence goal, rough acceptance criteria, dependencies, risk notes
+   - Feature ID format: `F<epic>.<feature>` (example: `F1.1`; first feature in epic 2 is `F2.1`)
+   - Each feature: ID, title, 1–2 sentence goal, rough acceptance criteria, dependencies, risk notes
 3) Write/update:
    - `spec/backlog.md`
    - Ensure `spec/index.md` links to the backlog.

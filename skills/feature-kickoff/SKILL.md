@@ -4,8 +4,8 @@ description: Create a feature spec under spec/features/ (and ADR if needed).
 ---
 
 1) Read project `AGENTS.md` (repo root) and `codex.toml` (if present) and follow their conventions and commands.
-2) Collect inputs: Feature ID (F-XXXX), title, goal, constraints.
-3) Create `spec/features/F-XXXX-<slug>.md`:
+2) Collect inputs: Feature ID (`F<epic>.<feature>`, example `F1.1`), title, goal, constraints.
+3) Create `spec/features/<feature-id>-<slug>.md` (use the actual feature ID):
    - Prefer `spec/templates/feature.md` if present.
    - Otherwise use `assets/default_feature_template.md`.
 4) Fill: Problem, Scope, Acceptance Criteria, initial Implementation plan, initial Test plan.

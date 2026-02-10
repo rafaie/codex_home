@@ -3,7 +3,8 @@ name: feature-closeout
 description: Finalize a feature tests green, ADRs captured, docs updated, and spec fully recorded.
 ---
 
-1) Read the feature spec `spec/features/F-XXXX-*.md`.
+1) Read the feature spec `spec/features/<feature-id>-<slug>.md`.
+   - `<feature-id>` must use `F<epic>.<feature>` (example: `F1.1`).
 2) Confirm:
    - Acceptance criteria satisfied
    - Tests added/updated and passing (run test command)
@@ -15,4 +16,4 @@ description: Finalize a feature tests green, ADRs captured, docs updated, and sp
    - Files changed
    - Commands run
    - Links to docs and ADRs
-7) End by stating “Feature F-XXXX is ready to merge/release” plus any remaining TODOs.
+7) End by stating “Feature <feature-id> is ready to merge/release” (use the actual feature ID) plus any remaining TODOs.

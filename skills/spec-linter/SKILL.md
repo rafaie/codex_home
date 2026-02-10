@@ -3,7 +3,8 @@ name: spec-linter
 description: Review a feature spec for clarity, testability, and completeness before implementation.
 ---
 
-1) Read the target `spec/features/F-XXXX-*.md` and project conventions from `AGENTS.md`.
+1) Read the target `spec/features/<feature-id>-<slug>.md` and project conventions from `AGENTS.md`.
+   - `<feature-id>` must use `F<epic>.<feature>` (example: `F1.1`).
 2) Check for:
    - Clear problem statement and scope/non-scope
    - Acceptance criteria that are testable and unambiguous

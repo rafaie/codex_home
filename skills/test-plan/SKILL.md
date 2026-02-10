@@ -3,7 +3,8 @@ name: test-plan
 description: Create a feature-level test plan from acceptance criteria and add it to the feature spec.
 ---
 
-1) Read `AGENTS.md`, `codex.toml` (if present), and the target feature spec `spec/features/F-XXXX-*.md`.
+1) Read `AGENTS.md`, `codex.toml` (if present), and the target feature spec `spec/features/<feature-id>-<slug>.md`.
+   - `<feature-id>` must use `F<epic>.<feature>` (example: `F1.1`).
 2) Convert acceptance criteria into a test matrix:
    - Unit tests (fast, isolated)
    - Integration tests (component boundaries)
