@@ -22,3 +22,8 @@ spec/
 
 # sqlite
 sqlite/
+
+#shell_snapshots
+shell_snapshots/
+
+skills/.system/
