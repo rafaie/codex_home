@@ -14,10 +14,17 @@ other project repositories.
 ## Default command assumptions (override per project)
 When prompts/skills mention tests or checks and no local override exists,
 use these defaults:
-- Tests: `uv run pytest -q`
+- Tests (quick): `uv run pytest -q`
+- Tests (full): `uv run pytest -q`
+- Tests (legacy fallback): `uv run pytest -q`
 - Lint: `uv run ruff check .`
 - Format: `uv run ruff format . --check`
 - Types: `uv run mypy src`
+- Smoke: `uv run python scripts/smoke.py`
+
+Smoke mode default for this skill pack:
+- Prefer live canary mode when provider credentials are present (for example `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `SMOKE_LIVE=1`).
+- Fallback to offline mode when live credentials are unavailable.
 
 ## Per-project overrides
 Create a `codex.toml` in the target repo root to override commands:
@@ -25,9 +32,12 @@ Create a `codex.toml` in the target repo root to override commands:
 ```toml
 [commands]
 test = "uv run pytest -q"
+test_quick = "uv run pytest -q"
+test_full = "uv run pytest -q"
 lint = "uv run ruff check ."
 format = "uv run ruff format . --check"
 typecheck = "uv run mypy src"
+smoke = "uv run python scripts/smoke.py"
 ```
 
 ## Guardrails

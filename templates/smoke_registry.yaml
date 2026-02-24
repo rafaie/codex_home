@@ -1,0 +1,46 @@
+# Feature-owned smoke scenario registry (template)
+# Keep each scenario tiny and cheap. Live canary is preferred.
+
+scenarios:
+  - id: "SAMPLE_F1_1"
+    feature: "F1.1"
+    description: "Example smoke scenario for a runnable path"
+    enabled: true
+    run_profile: "both"   # manual | nightly | both
+    mode: "live"          # live preferred, offline optional
+
+    # Real subprocess entrypoint to execute
+    entrypoint:
+      cmd: ["uv", "run", "python", "-m", "your_package.cli", "--input", "tests/fixtures/smoke/sample.json"]
+      cwd: "."
+
+    dataset_fixture: "tests/fixtures/smoke/sample.json"
+    sample_ids: ["sample-1"]
+
+    providers:
+      - provider: "openai"
+        model: "gpt-4.1-mini"
+
+    request_defaults:
+      temperature: 0
+      max_tokens: 256
+      timeout_sec: 20
+      max_retries: 1
+
+    checks:
+      schema: "spec/schemas/your_output.schema.json"
+      invariants:
+        - "required_field_present"
+        - "score_in_range"
+
+    budgets:
+      time_budget_sec: 60
+      max_requests: 6
+      max_tokens_total: 1200
+      cost_ceiling_usd: 0.50
+
+    artifacts:
+      output_dir_pattern: "artifacts/smoke/{timestamp}"
+      redact_secrets: true
+      artifact_version: "1"
+      golden_enabled: false

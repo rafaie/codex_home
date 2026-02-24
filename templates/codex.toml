@@ -2,7 +2,18 @@
 # Replace commands to match your stack. Skills will prefer these commands if present.
 
 [commands]
+# Legacy compatibility key
 test = "uv run pytest -q"
+
+# Preferred split for faster loops
+test_quick = "uv run pytest -q"
+test_full = "uv run pytest -q"
+
 lint = "uv run ruff check ."
 format = "uv run ruff format . --check"
 typecheck = "uv run mypy src"
+
+# Smoke should execute your real entrypoint via scripts/smoke.py.
+# Smoke mode policy for this skill pack is live-first when credentials exist,
+# with offline fallback handled by the smoke harness.
+smoke = "uv run python scripts/smoke.py"

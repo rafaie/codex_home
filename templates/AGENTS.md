@@ -5,8 +5,9 @@
 - Use spec-driven development.
 - For new projects: run `$project-intake` → `$backlog-builder`.
 - For each feature: run `$qa-intake` (if requirements are unclear) → `$feature-kickoff` → `$spec-linter` → `$test-plan` → `$write-tests` → `$implement-feature`.
-- Then run `$feature-closeout` as the required final feature step (definition of done).
-- `feature-closeout` includes ADR/docs/index hygiene (`$adr-review` when needed, `$docs-update`, `$docs-index-refresh`).
+- Then run `$ship-feature` as the required final feature step (definition of done).
+- `ship-feature` includes full checks + smoke evidence and ADR/docs/index hygiene (`$adr-review` when needed, `$docs-update`, `$docs-index-refresh`).
+- Use `$feature-closeout` only when your repo has not adopted `$ship-feature` yet.
 - If tests fail: `$debug-loop` (or `$failure-triage` when many failures exist).
 - Before release: run `$release-prep`.
 

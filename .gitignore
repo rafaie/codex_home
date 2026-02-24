@@ -19,6 +19,16 @@ rules/
 
 # spec
 spec/
+!spec/
+spec/*
+!spec/index.md
+!spec/changelog.md
+!spec/decisions/
+spec/decisions/*
+!spec/decisions/ADR-*.md
+
+# local desktop app state
+.codex-global-state.json
 
 # sqlite
 sqlite/

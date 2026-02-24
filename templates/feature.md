@@ -27,6 +27,12 @@ _Feature ID format: `F<epic>.<feature>` (example: `F1.1`)._
 - Integration:
 - E2E:
 - Edge cases:
+- Smoke test:
+  - Scenario:
+  - Fixture:
+  - Expected output shape (schema/invariants):
+  - Golden comparison (if enabled):
+  - Artifact path: `artifacts/smoke/...`
 
 ## Decisions / ADRs
 - (Link ADRs here)
@@ -39,3 +45,8 @@ _Feature ID format: `F<epic>.<feature>` (example: `F1.1`)._
 
 ## Docs/README updates
 - ...
+
+## Evidence
+- Smoke artifacts:
+- Smoke summary:
+- Key metrics (optional):

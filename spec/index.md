@@ -1,26 +1,35 @@
 # Codex Home Spec Index
 
-This is the spec index for my global Codex home (`~/.codex`).
-It explains how to use prompts and skills across projects.
+Navigation for the global Codex home (`~/.codex`) skill pack.
 
-## Quick usage
-- Open the target project repo.
-- Read the project `AGENTS.md` and `codex.toml` (if present).
-- Use prompts from `prompts/` as needed.
-- Use skills from `skills/` when tasks match their descriptions.
+## Start here
+- [`README.md`](../README.md)
+- [`AGENTS.md`](../AGENTS.md)
+- [`templates/codex.toml`](../templates/codex.toml)
+- [`spec/changelog.md`](changelog.md)
+- [`spec/decisions/`](decisions/)
 
-## Prompt examples
-- Session start: `prompts/lifecycle-session-start.md`
-- Feature kickoff: `prompts/lifecycle-feature-kickoff.md`
-- Implement feature: `prompts/lifecycle-implement.md`
-- Debug loop: `prompts/lifecycle-debug.md`
-- Docs update: `prompts/lifecycle-docs.md`
-- Release prep: `prompts/lifecycle-release.md`
+## Current status
+- Workflow is now hard-cutover to quick inner loop + required smoke evidence for runnable paths.
+- New endgame flow is `$ship-feature` as the standard one-command shipping path.
+- Smoke policy is live-first with offline fallback and required artifact contract.
 
-## Skill examples
-- `feature-kickoff`: create a feature spec under `spec/features/`.
-- `implement-feature`: implement a feature based on its spec.
-- `debug-loop`: reproduce, minimize, test, fix, document.
-- `write-tests`: add tests from acceptance criteria.
-- `docs-update`: update docs after shipping.
-- `release-prep`: run checks and prep release notes.
+## Features and workflow
+### Planned
+- Expand smoke registry/template examples for more provider patterns.
+
+### In Progress
+- None tracked in this global home spec index.
+
+### Implemented
+- `qa-intake` now produces a verification/evidence contract and smoke questions when applicable.
+- `test-runner` now supports quick/full modes and always includes smoke results.
+- `implement-feature` and `feature-closeout` now require smoke milestones/evidence.
+- Added new skills: `smoke-test`, `ship-feature`.
+- Updated templates for smoke sections and evidence placeholders.
+
+## Decisions
+- [`ADR-0001-live-first-smoke-harness.md`](decisions/ADR-0001-live-first-smoke-harness.md)
+
+## Notes
+- `release-prep` remains a release-level skill and is not the per-feature endgame.
