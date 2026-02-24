@@ -1,6 +1,6 @@
 ---
 name: ship-feature
-description: Execute the endgame path for one feature: full checks, smoke evidence, ADR/docs/index updates, and release-readiness summary.
+description: "Execute the endgame path for one feature: full checks, smoke evidence, ADR/docs/index updates, and release-readiness summary."
 ---
 
 1) Read target spec `spec/features/<feature-id>-<slug>.md`.

@@ -30,9 +30,9 @@ In Codex CLI / IDE:
 
 ---
 
-## Recommended feature workflow (hard cutover)
+## Recommended feature workflow
 
-For each feature:
+For each feature (default path):
 
 1) **Clarify**: `$qa-intake`
 2) **Spec**: `$feature-kickoff`
@@ -43,6 +43,9 @@ For each feature:
 7) **Ship endgame (one command)**: `$ship-feature`
 
 `$ship-feature` runs full checks + smoke + ADR/docs/index updates and emits a readiness summary with evidence paths.
+
+Compatibility path for repos that have not adopted `$ship-feature` yet:
+- Use `$feature-closeout` as the final feature step instead of `$ship-feature`.
 
 Use `$release-prep` for release-level work across features.
 
@@ -59,6 +62,12 @@ Use `$release-prep` for release-level work across features.
   - `stderr.txt`
   - `timing.json`
 - Smoke mode is **live-first** when credentials are present, with offline fallback.
+- Smoke budget controls should be enforced (`--time-budget-sec`, `--max-requests`) and reported as `budget_exceeded` when limits are hit.
+
+### Smoke harness starter expectations (`templates/smoke.py`)
+- Uses live-first mode by default when credentials are available.
+- Enforces global run budgets (time/request caps) and reports budget telemetry in `summary.json`.
+- Fails closed on output validation (`parse_error`, `schema_error`, `invariant_error`) instead of treating successful subprocess execution as a pass.
 
 ---
 
@@ -107,7 +116,7 @@ Starter example: `templates/codex.toml`.
 ### Architecture and release
 - `adr-review`
 - `architecture-updater`
-- `release-prep`
+- `release-prep` (format/lint -> typecheck -> full tests -> smoke)
 
 ---
 
