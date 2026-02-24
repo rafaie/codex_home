@@ -42,6 +42,8 @@ For each feature (default path):
 6) **Debug if needed**: `$debug-loop`
 7) **Ship endgame (one command)**: `$ship-feature`
 
+Note: to streamline steps 3-5, you can run `$implementation-phase <feature-id>` to orchestrate `$test-plan`, `$write-tests`, and `$implement-feature`.
+
 `$ship-feature` runs full checks + smoke + ADR/docs/index updates and emits a readiness summary with evidence paths.
 
 Compatibility path for repos that have not adopted `$ship-feature` yet:
@@ -107,6 +109,7 @@ Starter example: `templates/codex.toml`.
 
 ### Implementation and docs
 - `feature-kickoff`
+- `implementation-phase` (orchestrates `test-plan` -> `write-tests` -> `implement-feature`)
 - `implement-feature`
 - `ship-feature`
 - `feature-closeout`
@@ -125,6 +128,7 @@ Starter example: `templates/codex.toml`.
 Most common:
 - `$qa-intake`
 - `$feature-kickoff`
+- `$implementation-phase`
 - `$test-plan`
 - `$write-tests`
 - `$implement-feature`
