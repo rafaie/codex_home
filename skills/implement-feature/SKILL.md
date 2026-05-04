@@ -11,6 +11,8 @@ description: Implement a work item end-to-end based on its spec/features folder 
 3) Implement iteratively, one AC at a time:
    - Make the smallest change to satisfy one criterion
    - Add/adjust tests
+   - Add or update Google-style docstrings for new/changed public APIs, CLI entrypoints, data models/schemas, provider/client wrappers, integration boundaries, non-trivial private helpers, and shared test fixtures.
+   - Do not add docstrings that only restate the function name.
    - Run quick checks (`test_quick`, else `test`, else `uv run pytest -q`)
 4) Run full checks plus smoke at required milestones:
    - End of the final AC
@@ -26,6 +28,7 @@ description: Implement a work item end-to-end based on its spec/features folder 
    - `test-results.md`: commands run + outcomes
    - `status.md`: current status, blockers, next action
    - `feature.md`: only update scope/AC/design if reality changed
-7) Include smoke evidence path (`artifacts/smoke/...`) in `implementation.md` or `test-results.md` when smoke runs.
-8) If checks fail, invoke `debug-loop`.
-9) If user-facing behavior changed, invoke `docs-update`.
+7) Include docstring changes or intentional omissions in `implementation.md` when API-facing code changed.
+8) Include smoke evidence path (`artifacts/smoke/...`) in `implementation.md` or `test-results.md` when smoke runs.
+9) If checks fail, invoke `debug-loop`.
+10) If user-facing behavior changed, invoke `docs-update`.

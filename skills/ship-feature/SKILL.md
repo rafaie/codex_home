@@ -10,6 +10,7 @@ description: "Execute the endgame path for one work item: full checks, smoke evi
    - `feature.md` has acceptance criteria
    - `test-plan.md` exists and has planned coverage
    - `test-plan.md` has a smoke plan (scenario + fixture + pass/fail mode + artifact expectation)
+   - API-facing work has Google-style docstring expectations documented or a clear no-change rationale
    - `status.md` has owner/status/next action
 3) Run `test-runner` in full mode.
    - `test-runner` full mode owns the smoke execution for this flow.
@@ -31,6 +32,7 @@ description: "Execute the endgame path for one work item: full checks, smoke evi
 10) End with a concise readiness summary:
    - work item ID
    - pass/fail of full checks
+   - pass/fail of docstring checks when configured
    - pass/fail of the full-mode smoke stage
    - evidence paths
    - ADR/docs/index update status

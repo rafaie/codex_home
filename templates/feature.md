@@ -29,6 +29,10 @@ _Work item ID format: `S-<stream>-<nnn>` (example: `S-core-001`)._
 ### Risks
 - ...
 
+### Documentation / docstrings
+- Public API docstrings needed:
+- CLI/data model/provider wrapper docstrings needed:
+- No docstring updates needed because:
+
 ## Decisions / ADRs
 - (Link ADRs here)
-

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-05-04
+- Added Google-style docstring standards, optional `[commands].docstrings`, `templates/docstrings.md`, and workflow checks in implementation/review/ship skills.
+
 ## 2026-05-03
 - Updated `project-intake` to bootstrap new target repos with missing `AGENTS.md`, `codex.toml`, `spec/templates/`, smoke starter files, `spec/brief.md`, `spec/index.md`, and `spec/changelog.md`.
 - Hardened the smoke/ship contract so `test-runner` full mode owns smoke execution and `ship-feature` validates the emitted artifact instead of rerunning live smoke.

@@ -20,7 +20,13 @@ use these defaults:
 - Lint: `uv run ruff check .`
 - Format: `uv run ruff format . --check`
 - Types: `uv run mypy src`
+- Docstrings (optional): run `[commands].docstrings` when configured by the target repo.
 - Smoke: `uv run python scripts/smoke.py`
+
+## Python docstring standard
+- Use Google-style docstrings for public APIs, CLI entrypoints, data models/schemas, provider/client wrappers, integration boundaries, non-trivial private helpers, and shared test fixtures.
+- Do not add docstrings that only restate the function name.
+- Prefer project-local lint configuration for enforcement.
 
 Smoke mode default for this skill pack:
 - Prefer live canary mode when provider credentials are present (for example `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, or `SMOKE_LIVE=1`).
@@ -37,6 +43,8 @@ test_full = "uv run pytest -q"
 lint = "uv run ruff check ."
 format = "uv run ruff format . --check"
 typecheck = "uv run mypy src"
+# Optional:
+# docstrings = "uv run pydocstyle src tests"
 smoke = "uv run python scripts/smoke.py"
 ```
 

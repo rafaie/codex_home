@@ -13,6 +13,11 @@ lint = "uv run ruff check ."
 format = "uv run ruff format . --check"
 typecheck = "uv run mypy src"
 
+# Optional. Enable when the repo has pydocstyle or Ruff docstring rules configured.
+# Examples:
+# docstrings = "uv run pydocstyle src tests"
+# docstrings = "uv run ruff check . --select D"
+
 # Smoke should execute your real entrypoint via scripts/smoke.py.
 # Smoke mode policy for this skill pack is live-first when credentials exist,
 # with offline fallback handled by the smoke harness.

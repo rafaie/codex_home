@@ -9,8 +9,9 @@ description: Add or improve tests based on a work item folder's acceptance crite
    - For legacy single-file specs, read the matching file under `spec/features/`.
 2) Refine the test matrix only if the existing `test-plan.md` has gaps.
 3) Implement tests under `tests/`.
-4) Run the quick test command (`test_quick`, else `test`, else `uv run pytest -q`).
-5) Update `test-results.md` with:
+4) Add Google-style docstrings only for shared/non-obvious test fixtures and helpers; avoid docstrings on trivial single-test helpers.
+5) Run the quick test command (`test_quick`, else `test`, else `uv run pytest -q`).
+6) Update `test-results.md` with:
    - tests added/updated
    - command run + outcome
    - failures and fixes, if any

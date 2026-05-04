@@ -14,6 +14,7 @@ description: Review a work item documentation folder for clarity, testability, a
    - `status.md`: current status, owner, next action, blockers
    - `evidence/README.md`: evidence index with smoke artifact/summary placeholders
    - Smoke placeholders: scenario, fixture, pass/fail mode, runtime budget, artifact path
+   - Docstring expectations: API-facing work mentions Google-style docstrings or explicitly explains why no docstring updates are needed
    - Legacy single-file specs: equivalent sections are present
 3) Produce a short “Spec Gaps” list, then either:
    - Propose edits, or

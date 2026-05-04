@@ -44,6 +44,7 @@ For a brand-new project repo:
 - `spec/templates/*`
 - `spec/smoke.md`
 - `spec/smoke_registry.yaml`
+- `spec/docstrings.md`
 - `scripts/smoke.py`
 - `spec/brief.md`
 - `spec/index.md`
@@ -100,6 +101,7 @@ Skills look for these keys under `[commands]`:
 - `lint`
 - `format`
 - `typecheck`
+- `docstrings` (optional)
 - `smoke`
 
 Starter example: `templates/codex.toml`.
@@ -112,6 +114,17 @@ New work items use stream/sequence IDs and a folder-based documentation layout:
 - Folder: `spec/features/<work-id>-<slug>/`
 - Required docs: `feature.md`, `implementation.md`, `test-plan.md`, `test-results.md`, `status.md`
 - Evidence index: `evidence/README.md`
+
+## Python docstring standard
+
+Downstream Python projects should use Google-style docstrings where they improve maintainability:
+- Public modules, classes, functions, and methods
+- CLI entrypoints and command handlers
+- Data models, schemas, provider/client wrappers, and integration boundaries
+- Non-trivial private helpers
+- Shared test fixtures/helpers
+
+Avoid docstrings that only repeat the symbol name. Starter policy: `templates/docstrings.md`.
 
 ---
 

@@ -7,6 +7,7 @@
 - Backlog: spec/backlog.md
 - Decisions (ADRs): spec/decisions/
 - Smoke contract: spec/smoke.md
+- Docstring standard: spec/docstrings.md
 
 ## Current status
 - Phase:

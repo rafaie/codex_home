@@ -6,6 +6,7 @@ Navigation for the global Codex home (`~/.codex`) skill pack.
 - [`README.md`](../README.md)
 - [`AGENTS.md`](../AGENTS.md)
 - [`templates/codex.toml`](../templates/codex.toml)
+- [`templates/docstrings.md`](../templates/docstrings.md)
 - [`spec/changelog.md`](changelog.md)
 - [`spec/decisions/`](decisions/)
 
@@ -15,6 +16,7 @@ Navigation for the global Codex home (`~/.codex`) skill pack.
 - Default endgame flow is `$ship-feature` with full checks, smoke evidence, ADR/docs/index updates, and readiness output.
 - Smoke policy is live-first with offline fallback, required artifact contract, and enforced run budgets.
 - `test-runner` full mode is the canonical smoke owner for ship flow; `ship-feature` validates and records that artifact instead of rerunning smoke.
+- Python docstring guidance is standardized on Google style and exposed through `templates/docstrings.md` plus optional `[commands].docstrings`.
 
 ## Work items and workflow
 ### Planned
@@ -30,6 +32,7 @@ Navigation for the global Codex home (`~/.codex`) skill pack.
 - `ship-feature` is the default endgame; `feature-closeout` remains a deprecated compatibility fallback.
 - Templates now use work item folders with `feature.md`, `implementation.md`, `test-plan.md`, `test-results.md`, `status.md`, and `evidence/README.md`.
 - `project-intake` now initializes missing `AGENTS.md`, `codex.toml`, `spec/templates/`, smoke starter files, `spec/brief.md`, `spec/index.md`, and `spec/changelog.md` in target repos.
+- Google-style docstrings are now part of the downstream project convention and implementation/review/ship workflow.
 
 ## Decisions
 - [`ADR-0001-live-first-smoke-harness.md`](decisions/ADR-0001-live-first-smoke-harness.md)

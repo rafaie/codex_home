@@ -20,11 +20,13 @@ description: Bootstrap a new project repo, then turn a rough project idea into a
      - `test-results.md`
      - `status.md`
      - `evidence.md`
+     - `docstrings.md`
      - `spec_index.md`
    - Create smoke starters only if missing:
      - `spec/smoke.md` from `templates/smoke.md`
      - `spec/smoke_registry.yaml` from `templates/smoke_registry.yaml`
      - `scripts/smoke.py` from `templates/smoke.py`
+   - Create `spec/docstrings.md` from `templates/docstrings.md` only if missing.
    - Do not overwrite existing repo-local files unless the user explicitly asks.
 3) Read the user’s project idea (or `spec/idea.md` if it exists), plus the newly bootstrapped `AGENTS.md` and `codex.toml`.
 4) Ask up to 5 targeted questions only if essential info is missing (goal, users, constraints, success metrics).

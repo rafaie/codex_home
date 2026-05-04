@@ -8,17 +8,20 @@ description: Run quick/full checks consistently, include smoke, and summarize fa
    - format: `uv run ruff format . --check`
    - lint: `uv run ruff check .`
    - typecheck: `uv run mypy src`
+   - docstrings: optional `[commands].docstrings`
    - quick tests: `test_quick`, else `test`, else `uv run pytest -q`
    - full tests: `test_full`, else `test`, else `uv run pytest -q`
    - smoke: `smoke`, else `uv run python scripts/smoke.py` if present
 3) Support two modes:
    - Quick mode:
      - format/lint
+     - docstrings when `[commands].docstrings` is configured and the work item changes Python APIs
      - work-item-scoped or quick tests (`test_quick` fallback chain)
      - smoke-test
    - Full mode:
      - format/lint
      - typecheck
+     - docstrings when `[commands].docstrings` is configured
      - full test suite (`test_full` fallback chain)
      - smoke-test
 4) Always run smoke as its own stage after tests/checks and report it as a separate result bucket.
@@ -29,6 +32,7 @@ description: Run quick/full checks consistently, include smoke, and summarize fa
    - What passed
    - What failed (top 3 failure signatures)
    - Smoke result (pass/fail + artifact path when available)
+   - Docstring result when configured
    - Likely category: env/setup vs flaky vs deterministic bug vs expectation mismatch
 6) Recommendation logic:
    - If unit/tests pass but smoke fails, prioritize packaging/runtime and invoke `debug-loop`.
