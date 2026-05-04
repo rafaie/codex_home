@@ -14,7 +14,7 @@ description: Run quick/full checks consistently, include smoke, and summarize fa
 3) Support two modes:
    - Quick mode:
      - format/lint
-     - feature-scoped or quick tests (`test_quick` fallback chain)
+     - work-item-scoped or quick tests (`test_quick` fallback chain)
      - smoke-test
    - Full mode:
      - format/lint
@@ -22,6 +22,8 @@ description: Run quick/full checks consistently, include smoke, and summarize fa
      - full test suite (`test_full` fallback chain)
      - smoke-test
 4) Always run smoke as its own stage after tests/checks and report it as a separate result bucket.
+   - In full mode, this smoke stage is the canonical smoke execution consumed by `ship-feature`.
+   - Emit or capture the smoke artifact path so downstream skills do not rerun live smoke unnecessarily.
 5) Summarize results:
    - Mode used and commands run
    - What passed

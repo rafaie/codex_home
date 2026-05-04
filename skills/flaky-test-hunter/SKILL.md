@@ -11,4 +11,4 @@ description: Identify and stabilize flaky tests (seeds, time, isolation) without
    - Hermetic fixtures/test doubles
    - Reducing reliance on network/timeouts
 4) Add a regression test or harness that reproduces the flake deterministically if possible.
-5) Re-run the relevant suite and document the root cause + fix in the feature spec Debug log.
+5) Re-run the relevant suite and document the root cause + fix in `test-results.md` (or the legacy Debug log section).

@@ -2,7 +2,7 @@
 
 - Status: proposed | accepted | superseded
 - Date: YYYY-MM-DD
-- Related feature(s): <feature-id> (example: F1.1)
+- Related work item(s): <work-id> (example: S-core-001)
 
 ## Context
 (What problem are we solving? What forces/constraints exist?)

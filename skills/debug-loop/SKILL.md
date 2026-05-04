@@ -8,4 +8,7 @@ description: Debug by reproducing, minimizing, writing regression tests, fixing,
 3) Add a regression test that fails before the fix.
 4) Fix the root cause.
 5) Re-run the project test command (`codex.toml` `test` if present; otherwise `uv run pytest -q`).
-6) Update the feature spec Debug log with repro, root cause, fix, and regression test.
+6) Update the work item docs with repro, root cause, fix, and regression test.
+   - Prefer `test-results.md` for failures/fixes.
+   - Use `implementation.md` for implementation notes.
+   - For legacy single-file specs, update the Debug log section.

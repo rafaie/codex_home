@@ -1,8 +1,8 @@
-# SDLC Skill Pack for Codex (Spec-Driven, Feature-by-Feature)
+# SDLC Skill Pack for Codex (Spec-Driven, Work-Item-by-Work-Item)
 
-This package provides a feature-level SDLC workflow for Codex:
+This package provides a work item level SDLC workflow for Codex:
 - clarify requirements with lightweight intake
-- create and maintain feature specs
+- create and maintain work item documentation folders
 - implement AC-by-AC with a fast inner loop
 - enforce real smoke evidence before shipping
 - keep docs and ADRs aligned
@@ -30,32 +30,48 @@ In Codex CLI / IDE:
 
 ---
 
-## Recommended feature workflow
+## Recommended work item workflow
 
-For each feature (default path):
+For a brand-new project repo:
+
+1) **Bootstrap + brief**: `$project-intake`
+2) **Backlog**: `$backlog-builder`
+3) **First work item docs**: `$feature-kickoff <work-id>`
+
+`$project-intake` bootstraps missing SDLC starter files into the target repo:
+- `AGENTS.md`
+- `codex.toml`
+- `spec/templates/*`
+- `spec/smoke.md`
+- `spec/smoke_registry.yaml`
+- `scripts/smoke.py`
+- `spec/brief.md`
+- `spec/index.md`
+
+It does not overwrite existing repo-local files unless explicitly asked.
+
+For each work item (default path):
 
 1) **Clarify**: `$qa-intake`
-2) **Spec**: `$feature-kickoff`
-3) **Test strategy**: `$test-plan`
-4) **Tests**: `$write-tests`
-5) **Implement (fast loop)**: `$implement-feature`
-6) **Debug if needed**: `$debug-loop`
-7) **Ship endgame (one command)**: `$ship-feature`
+2) **Docs**: `$feature-kickoff`
+3) **Implementation phase**: `$implementation-phase`
+4) **Debug if needed**: `$debug-loop`
+5) **Ship endgame (one command)**: `$ship-feature`
 
-Note: to streamline steps 3-5, you can run `$implementation-phase <feature-id>` to orchestrate `$test-plan`, `$write-tests`, and `$implement-feature`.
+`$implementation-phase <work-id>` orchestrates `$test-plan`, `$write-tests`, and `$implement-feature`.
 
 `$ship-feature` runs full checks + smoke + ADR/docs/index updates and emits a readiness summary with evidence paths.
 
 Compatibility path for repos that have not adopted `$ship-feature` yet:
-- Use `$feature-closeout` as the final feature step instead of `$ship-feature`.
+- Use `$feature-closeout` as the final work item step instead of `$ship-feature`.
 
-Use `$release-prep` for release-level work across features.
+Use `$release-prep` for release-level work across work items.
 
 ---
 
 ## Smoke-first workflow rules
 
-- Smoke is required for runnable paths (CLI/module/script features).
+- Smoke is required for runnable-path work items (CLI/module/script).
 - Smoke executes the real entrypoint through subprocess.
 - Smoke must produce evidence artifacts under `artifacts/smoke/...`:
   - `summary.json`
@@ -64,11 +80,13 @@ Use `$release-prep` for release-level work across features.
   - `stderr.txt`
   - `timing.json`
 - Smoke mode is **live-first** when credentials are present, with offline fallback.
+- Scenario `mode`/`run_profile` filters must prevent offline fallback from running live-only scenarios.
 - Smoke budget controls should be enforced (`--time-budget-sec`, `--max-requests`) and reported as `budget_exceeded` when limits are hit.
 
 ### Smoke harness starter expectations (`templates/smoke.py`)
 - Uses live-first mode by default when credentials are available.
-- Enforces global run budgets (time/request caps) and reports budget telemetry in `summary.json`.
+- Applies budget precedence as CLI override → selected scenario budget → harness default.
+- Reports command, artifact path, selected scenarios, fixtures, provider stats, and budget telemetry in `summary.json`.
 - Fails closed on output validation (`parse_error`, `schema_error`, `invariant_error`) instead of treating successful subprocess execution as a pass.
 
 ---
@@ -85,6 +103,15 @@ Skills look for these keys under `[commands]`:
 - `smoke`
 
 Starter example: `templates/codex.toml`.
+
+## Work item document layout
+
+New work items use stream/sequence IDs and a folder-based documentation layout:
+
+- ID format: `S-<stream>-<nnn>` (example: `S-core-001`)
+- Folder: `spec/features/<work-id>-<slug>/`
+- Required docs: `feature.md`, `implementation.md`, `test-plan.md`, `test-results.md`, `status.md`
+- Evidence index: `evidence/README.md`
 
 ---
 
@@ -126,6 +153,8 @@ Starter example: `templates/codex.toml`.
 ## Quick reference
 
 Most common:
+- `$project-intake`
+- `$backlog-builder`
 - `$qa-intake`
 - `$feature-kickoff`
 - `$implementation-phase`

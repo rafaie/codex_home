@@ -1,24 +1,31 @@
 ---
 name: feature-kickoff
-description: Create a feature spec under spec/features/ (and ADR if needed).
+description: Create a work item documentation folder under spec/features/ (and ADR if needed).
 ---
 
 1) Read project `AGENTS.md` (repo root) and `codex.toml` (if present) and follow conventions/commands.
-2) Collect inputs: Feature ID (`F<epic>.<feature>`, example `F1.1`), title, goal, constraints.
-3) Create `spec/features/<feature-id>-<slug>.md` (use actual feature ID):
-   - Prefer `spec/templates/feature.md` if present.
-   - Otherwise use `assets/default_feature_template.md`.
-4) Fill: Problem, Scope, Acceptance Criteria, initial Implementation plan, and initial Test plan.
-   - Test plan must include smoke details: scenario, fixture, pass/fail mode, artifact path.
-5) If no ADRs exist yet, create `spec/decisions/ADR-0001-initial-architecture.md` (prefer `spec/templates/adr.md` if present).
-6) If a major decision is required, create `spec/decisions/ADR-XXXX-<slug>.md` (prefer `spec/templates/adr.md` if present).
-7) Stop after writing specs. Do NOT implement code.
-8) End by listing the next 4 tasks.
+2) Collect inputs: Work item ID (`S-<stream>-<nnn>`, example `S-core-001`), title, goal, constraints.
+   - Accept legacy dotted `F` IDs only when updating older specs; create new work with `S-<stream>-<nnn>`.
+3) Create a work item folder `spec/features/<work-id>-<slug>/` (use actual work item ID).
+   - Prefer repo templates under `spec/templates/` if present.
+   - Otherwise use this skill's `assets/default_*_template.md` files.
+4) Create/update these documents inside the folder:
+   - `feature.md`: problem, scope, acceptance criteria, design, ADR links
+   - `implementation.md`: implementation plan and chronological implementation log
+   - `test-plan.md`: unit/integration/e2e/edge/smoke test plan
+   - `test-results.md`: commands run, outcomes, failures, fixes
+   - `status.md`: status, owner, next action, blockers
+   - `evidence/README.md`: directory placeholder and evidence index
+5) Fill the initial docs.
+   - `test-plan.md` must include smoke details: scenario, fixture, pass/fail mode, artifact path.
+6) If no ADRs exist yet, create `spec/decisions/ADR-0001-initial-architecture.md` (prefer `spec/templates/adr.md` if present).
+7) If a major decision is required, create `spec/decisions/ADR-XXXX-<slug>.md` (prefer `spec/templates/adr.md` if present).
+8) Stop after writing docs. Do NOT implement code.
+9) End by listing the next 3 tasks.
    - Tasks must be distinct (no duplicates).
    - Use this default sequence unless the user asks for a different flow:
-     1) `Run $test-plan <feature-id> to expand executable validation checks for this feature spec.`
-     2) `Run $write-tests <feature-id> to add/adjust tests mapped to the acceptance criteria.`
-     3) `Run $implement-feature <feature-id> to implement the code iteratively against the checklist using quick checks.`
-     4) `Run $ship-feature <feature-id> to execute full checks, smoke evidence, ADR/docs/index updates, and final readiness output.`
-   - `<feature-id>` must be the real ID for the spec you just created (example: `F1.1`).
+     1) `Run $spec-linter <work-id> to review the work item docs for gaps.`
+     2) `Run $implementation-phase <work-id> to plan tests, write tests, and implement the work item.`
+     3) `Run $ship-feature <work-id> to execute full checks, smoke evidence, ADR/docs/index updates, and final readiness output.`
+   - `<work-id>` must be the real ID for the folder you just created (example: `S-core-001`).
    - Keep each task line concrete and non-redundant.

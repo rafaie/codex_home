@@ -1,13 +1,13 @@
-# Feature-owned smoke scenario registry (template)
+# Work-item-owned smoke scenario registry (template)
 # Keep each scenario tiny and cheap. Live canary is preferred.
 
 scenarios:
-  - id: "SAMPLE_F1_1"
-    feature: "F1.1"
+  - id: "SAMPLE_S_CORE_001"
+    work_item: "S-core-001"
     description: "Example smoke scenario for a runnable path"
     enabled: true
     run_profile: "both"   # manual | nightly | both
-    mode: "live"          # live preferred, offline optional
+    mode: "both"          # live | offline | both; live canary is preferred when credentials exist
 
     # Real subprocess entrypoint to execute
     entrypoint:
@@ -34,6 +34,7 @@ scenarios:
         - "score_in_range"
 
     budgets:
+      # CLI overrides win; otherwise the harness uses scenario budgets, then defaults.
       time_budget_sec: 60
       max_requests: 6
       max_tokens_total: 1200

@@ -10,11 +10,13 @@ Navigation for the global Codex home (`~/.codex`) skill pack.
 - [`spec/decisions/`](decisions/)
 
 ## Current status
-- Workflow is now hard-cutover to quick inner loop + required smoke evidence for runnable paths.
-- New endgame flow is `$ship-feature` as the standard one-command shipping path.
-- Smoke policy is live-first with offline fallback and required artifact contract.
+- Workflow uses stream/sequence work item IDs (`S-<stream>-<nnn>`) and folder-based docs under `spec/features/`.
+- `$project-intake` bootstraps new target repos with SDLC starter files before writing `spec/brief.md` and `spec/index.md`.
+- Default endgame flow is `$ship-feature` with full checks, smoke evidence, ADR/docs/index updates, and readiness output.
+- Smoke policy is live-first with offline fallback, required artifact contract, and enforced run budgets.
+- `test-runner` full mode is the canonical smoke owner for ship flow; `ship-feature` validates and records that artifact instead of rerunning smoke.
 
-## Features and workflow
+## Work items and workflow
 ### Planned
 - Expand smoke registry/template examples for more provider patterns.
 
@@ -22,14 +24,16 @@ Navigation for the global Codex home (`~/.codex`) skill pack.
 - None tracked in this global home spec index.
 
 ### Implemented
-- `qa-intake` now produces a verification/evidence contract and smoke questions when applicable.
-- `test-runner` now supports quick/full modes and always includes smoke results.
-- `implement-feature` and `feature-closeout` now require smoke milestones/evidence.
-- Added new skills: `smoke-test`, `ship-feature`.
-- Updated templates for smoke sections and evidence placeholders.
+- `qa-intake` produces a verification/evidence contract and smoke questions when applicable.
+- `test-runner` supports quick/full modes and always includes smoke results.
+- `implementation-phase` orchestrates test planning, test writing, and implementation.
+- `ship-feature` is the default endgame; `feature-closeout` remains a deprecated compatibility fallback.
+- Templates now use work item folders with `feature.md`, `implementation.md`, `test-plan.md`, `test-results.md`, `status.md`, and `evidence/README.md`.
+- `project-intake` now initializes missing `AGENTS.md`, `codex.toml`, `spec/templates/`, smoke starter files, `spec/brief.md`, `spec/index.md`, and `spec/changelog.md` in target repos.
 
 ## Decisions
 - [`ADR-0001-live-first-smoke-harness.md`](decisions/ADR-0001-live-first-smoke-harness.md)
 
 ## Notes
-- `release-prep` remains a release-level skill and is not the per-feature endgame.
+- `project-intake` must run from the target project repo, not this global Codex home.
+- `release-prep` remains a release-level skill and is not the per-work-item endgame.

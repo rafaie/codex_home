@@ -4,7 +4,7 @@ description: Ask clarifying questions, then produce a structured brief and recom
 ---
 
 1) Ground in repo context before asking questions.
-   - Read `AGENTS.md`, `codex.toml` (if present), and relevant backlog/feature specs.
+   - Read `AGENTS.md`, `codex.toml` (if present), and relevant backlog/work item docs.
    - Do not ask for details already defined in repo docs; confirm defaults instead.
 2) Restate the request in one sentence.
 3) Ask only the minimum clarifying questions needed (typically 5–9). Do NOT implement yet.

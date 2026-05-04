@@ -1,26 +1,25 @@
-# F-000X — <Feature title>
+# <work-id>: <Title>
 
-**Status:** Proposed | In Progress | Done | Parked  
-**Owner:** <name>  
-**Created:** YYYY-MM-DD  
-**Target release:** v0.x  
-**Related ADRs:** ADR-000Y-...
+_Work item ID format: `S-<stream>-<nnn>` (example: `S-core-001`)._
 
-## 1) Problem statement
-What problem are we solving and for whom?
+## Goal
+(One sentence.)
 
-## 2) Scope
+## Problem / context
+(Why is this needed?)
+
+## Scope
 ### In scope
 - ...
 
 ### Out of scope
 - ...
 
-## 3) Requirements / acceptance criteria
-- [ ] AC1 ...
-- [ ] AC2 ...
+## Acceptance criteria
+1. ...
+2. ...
 
-## 4) Design
+## Design
 ### API / interfaces
 - ...
 
@@ -30,44 +29,6 @@ What problem are we solving and for whom?
 ### Risks
 - ...
 
-## 5) Implementation plan
-- [ ] Task 1
-- [ ] Task 2
+## Decisions / ADRs
+- (Link ADRs here)
 
-## 6) Test plan
-- Unit tests: ...
-- Integration tests: ...
-- Edge cases: ...
-- Smoke test:
-  - Scenario: ...
-  - Fixture: ...
-  - Expected output shape (schema/invariants): ...
-  - Golden comparison (if enabled): ...
-  - Artifact path: `artifacts/smoke/...`
-
-## 7) Implementation log
-Chronological notes (what changed, where, why). Include:
-- Files changed
-- Commands run + outcomes
-- Any key decisions or trade-offs
-
-## 8) Debug log
-When something breaks:
-- **Repro steps:**
-- **Expected vs observed:**
-- **Root cause:**
-- **Fix:**
-- **Regression test added:**
-
-## 9) Docs/README updates
-- ...
-
-## 10) Evidence
-- Smoke artifacts: ...
-- Smoke summary: ...
-- Key metrics (optional): ...
-
-## 11) Final reflection (retro)
-- What went well?
-- What surprised us?
-- What would we do differently next time?

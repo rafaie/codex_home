@@ -29,6 +29,15 @@ spec/decisions/*
 
 # local desktop app state
 .codex-global-state.json
+.codex-global-state.json.bak
+.tmp/
+ambient-suggestions/
+cache/
+installation_id
+logs_2.sqlite*
+plugins/
+session_index.jsonl
+state_5.sqlite*
 
 # sqlite
 sqlite/

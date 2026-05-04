@@ -1,24 +1,24 @@
 ---
 name: feature-closeout
-description: Finalize a feature with full checks, smoke evidence, ADR/docs updates, and complete spec records.
+description: Deprecated compatibility fallback for older repos that have not adopted ship-feature.
 ---
 
-1) Read the feature spec `spec/features/<feature-id>-<slug>.md`.
-   - `<feature-id>` must use `F<epic>.<feature>` (example: `F1.1`).
-2) Confirm all closure criteria:
+1) Prefer `ship-feature` for migrated repos. Use this skill only for older repos whose `AGENTS.md` still requires `feature-closeout`.
+2) Read the target work item folder `spec/features/<work-id>-<slug>/` or the matching legacy single-file spec under `spec/features/`.
+3) Confirm all closure criteria:
    - Acceptance criteria satisfied
    - Full checks passing (`test-runner` full mode)
    - Smoke-test passing with evidence artifacts under `artifacts/smoke/...`
    - Any failures were handled and documented in Debug log
-3) Ensure the feature spec includes an `## Evidence` section with:
+4) Ensure evidence is recorded in `test-results.md`, `implementation.md`, or the legacy `## Evidence` section:
    - `Smoke artifacts: <path>`
    - `Smoke summary: <brief>`
    - Optional key metrics (latency/error buckets)
-4) Run `adr-review` if decisions changed or are implied by implementation.
-5) Run `docs-update` for user-facing changes.
-6) Run `docs-index-refresh` to reflect feature status.
-7) Update the feature spec with:
+5) Run `adr-review` if decisions changed or are implied by implementation.
+6) Run `docs-update` for user-facing changes.
+7) Run `docs-index-refresh` to reflect work item status.
+8) Update the docs with:
    - Files changed
    - Commands run
    - Links to docs and ADRs
-8) End by stating `Feature <feature-id> is ready to merge/release` plus any remaining TODOs.
+9) End by stating `Work item <work-id> is ready to merge/release` plus any remaining TODOs.

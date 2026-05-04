@@ -4,12 +4,13 @@
 The global Codex skill pack previously emphasized unit/lint/type checks but did not enforce a real end-to-end smoke contract as a first-class gate. This allowed packaging/runtime/entrypoint issues to escape the inner loop and made ship readiness less legible.
 
 ## Decision
-Adopt a hard-cutover workflow with:
+Adopt a default smoke-first workflow with:
 - quick checks during implementation (`test_quick`) and full checks at milestone/endgame (`test_full`)
 - required smoke evidence for runnable paths
 - live-first smoke mode when credentials exist, with offline fallback
 - required smoke artifact contract (`summary.json`, `cases/*.json`, `stdout.txt`, `stderr.txt`, `timing.json`)
 - a single composite endgame skill (`ship-feature`) to standardize final checks and evidence capture
+- work item IDs using `S-<stream>-<nnn>` and folder-based docs under `spec/features/<work-id>-<slug>/`
 
 ## Alternatives considered
 1) Keep existing closeout flow and make smoke optional.
@@ -28,7 +29,7 @@ Adopt a hard-cutover workflow with:
 - Requires downstream repos to adopt smoke harness scaffolding for best results.
 
 ## Links
-- `/Users/mostafa/.codex/README.md`
-- `/Users/mostafa/.codex/spec/changelog.md`
-- `/Users/mostafa/.codex/skills/smoke-test/SKILL.md`
-- `/Users/mostafa/.codex/skills/ship-feature/SKILL.md`
+- [README.md](../../README.md)
+- [spec/changelog.md](../changelog.md)
+- [smoke-test/SKILL.md](../../skills/smoke-test/SKILL.md)
+- [ship-feature/SKILL.md](../../skills/ship-feature/SKILL.md)

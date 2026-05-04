@@ -6,15 +6,17 @@
 - Architecture: spec/architecture.md
 - Backlog: spec/backlog.md
 - Decisions (ADRs): spec/decisions/
+- Smoke contract: spec/smoke.md
 
 ## Current status
 - Phase:
 - What’s working:
 - What’s next:
+- Bootstrap state: initialized by `$project-intake`
 
-## Features
+## Work items
 ### Planned / In progress
-- F1.1 — <title> → spec/features/F1.1-<slug>.md
+- S-core-001 — <title> → spec/features/S-core-001-<slug>/status.md
 
 ### Implemented
 - (none yet)

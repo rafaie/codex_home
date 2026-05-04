@@ -1,11 +1,11 @@
 # Backlog
 
-## Epics
-- E1: <Epic title>
+## Streams
+- core: <Stream goal>
 
-## Features
+## Work items
 ### Planned
-- F1.1: <Title>
+- S-core-001: <Title>
   - Goal:
   - Rough AC:
   - Dependencies:

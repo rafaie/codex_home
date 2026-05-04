@@ -1,18 +1,19 @@
 ---
 name: implementation-phase
-description: Run test-plan, write-tests, and implement-feature in sequence for one feature.
+description: Run test-plan, write-tests, and implement-feature in sequence for one work item.
 ---
 
-1) Read project `AGENTS.md`, `codex.toml` (if present), and target `spec/features/<feature-id>-<slug>.md`.
-   - `<feature-id>` must use `F<epic>.<feature>` (example: `F1.1`).
-2) Execute the implementation phase in this exact order for the same feature ID:
-   - `Run $test-plan <feature-id>`
-   - `Run $write-tests <feature-id>`
-   - `Run $implement-feature <feature-id>`
+1) Read project `AGENTS.md`, `codex.toml` (if present), and target work item folder `spec/features/<work-id>-<slug>/`.
+   - `<work-id>` must use `S-<stream>-<nnn>` (example: `S-core-001`) for new work.
+   - For legacy single-file specs, read the matching file under `spec/features/`.
+2) Execute the implementation phase in this exact order for the same work item ID:
+   - `Run $test-plan <work-id>`
+   - `Run $write-tests <work-id>`
+   - `Run $implement-feature <work-id>`
 3) Validate outcomes after each step:
-   - `test-plan`: feature spec Test plan is updated with AC-mapped cases and fixtures.
+   - `test-plan`: `test-plan.md` is updated with AC-mapped cases and fixtures.
    - `write-tests`: tests are added/updated under `tests/` and test command is run.
-   - `implement-feature`: AC checklist is completed, required checks pass, and Implementation log includes commands + smoke evidence.
+   - `implement-feature`: AC checklist is completed, required checks pass, and work item docs include commands + smoke evidence.
 4) Failure handling:
    - Deterministic failures: run `debug-loop`.
    - Many simultaneous failures: run `failure-triage`.
@@ -21,6 +22,5 @@ description: Run test-plan, write-tests, and implement-feature in sequence for o
    - completed steps
    - blockers/deferred items (if any)
    - next recommended command:
-     - `Run $ship-feature <feature-id> ...` when all steps are complete
+     - `Run $ship-feature <work-id> ...` when all steps are complete
      - otherwise `Run $debug-loop ...` with the failing signature
-

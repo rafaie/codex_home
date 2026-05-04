@@ -1,6 +1,6 @@
-# <feature-id>: <Title>
+# <work-id>: <Title>
 
-_Feature ID format: `F<epic>.<feature>` (example: `F1.1`)._
+_Work item ID format: `S-<stream>-<nnn>` (example: `S-core-001`)._
 
 ## Goal
 (One sentence.)
@@ -16,37 +16,19 @@ _Feature ID format: `F<epic>.<feature>` (example: `F1.1`)._
 - ...
 
 ## Acceptance criteria
-1) ...
-2) ...
+1. ...
+2. ...
 
-## Implementation plan (initial)
+## Design
+### API / interfaces
 - ...
 
-## Test plan (initial)
-- Unit:
-- Integration:
-- E2E:
-- Edge cases:
-- Smoke test:
-  - Scenario:
-  - Fixture:
-  - Expected output shape (schema/invariants):
-  - Golden comparison (if enabled):
-  - Artifact path: `artifacts/smoke/...`
+### Data model
+- ...
+
+### Risks
+- ...
 
 ## Decisions / ADRs
 - (Link ADRs here)
 
-## Implementation log
-- ...
-
-## Debug log
-- ...
-
-## Docs/README updates
-- ...
-
-## Evidence
-- Smoke artifacts:
-- Smoke summary:
-- Key metrics (optional):

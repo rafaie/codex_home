@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -70,6 +71,11 @@ PRIORITY = [
     "internal_error",
 ]
 
+DEFAULT_TIME_BUDGET_SEC = 60
+DEFAULT_MAX_REQUESTS = 6
+DEFAULT_MAX_TOKENS = 256
+DEFAULT_MAX_TOKENS_TOTAL = 1200
+
 
 @dataclass
 class CaseResult:
@@ -106,14 +112,18 @@ def _default_mode() -> str:
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="Run smoke scenarios and write artifacts.")
     p.add_argument("--mode", choices=["live", "offline"], default=None)
-    p.add_argument("--feature", default=None)
+    p.add_argument("--run-profile", choices=["manual", "nightly", "both"], default="manual")
+    p.add_argument("--work-item", default=None)
+    p.add_argument("--feature", default=None, help="Deprecated alias for --work-item.")
     p.add_argument("--scenario", default=None)
     p.add_argument("--providers", default=None)
     p.add_argument("--max-cases", type=int, default=1)
     p.add_argument("--seed", type=int, default=1337)
-    p.add_argument("--time-budget-sec", type=int, default=60)
-    p.add_argument("--max-requests", type=int, default=6)
-    p.add_argument("--max-tokens", type=int, default=256)
+    p.add_argument("--time-budget-sec", type=int, default=None)
+    p.add_argument("--max-requests", type=int, default=None)
+    p.add_argument("--max-tokens", type=int, default=None)
+    p.add_argument("--max-tokens-total", type=int, default=None)
+    p.add_argument("--cost-ceiling-usd", type=float, default=None)
     p.add_argument("--temperature", type=float, default=0.0)
     p.add_argument("--output-dir", default=None)
     p.add_argument("--redact-secrets", choices=["true", "false"], default="true")
@@ -136,10 +146,29 @@ def _safe_read(path: Path) -> str:
 def _redact(text: str, enabled: bool) -> str:
     if not enabled:
         return text
-    tokens = ["API_KEY", "TOKEN", "SECRET", "PASSWORD"]
     redacted = text
-    for token in tokens:
-        redacted = redacted.replace(token, "REDACTED")
+    sensitive_env_names = (
+        "API_KEY",
+        "TOKEN",
+        "SECRET",
+        "PASSWORD",
+        "CREDENTIAL",
+        "PRIVATE_KEY",
+    )
+    for name, value in os.environ.items():
+        if not value or len(value) < 8:
+            continue
+        if any(marker in name.upper() for marker in sensitive_env_names):
+            redacted = redacted.replace(value, "REDACTED")
+
+    patterns = [
+        r"Bearer\s+[A-Za-z0-9._~+/=-]+",
+        r"(?i)(api[_-]?key|token|secret|password)\s*[:=]\s*['\"]?[^'\"\s,}]+",
+        r"sk-[A-Za-z0-9_-]{16,}",
+        r"gh[pousr]_[A-Za-z0-9_]{20,}",
+    ]
+    for pattern in patterns:
+        redacted = re.sub(pattern, "REDACTED", redacted)
     return redacted
 
 
@@ -155,7 +184,26 @@ def _load_registry(path: Path) -> dict[str, Any]:
     return data
 
 
-def _select_scenarios(data: dict[str, Any], feature: str | None, scenario: str | None, max_cases: int) -> list[dict[str, Any]]:
+def _matches_mode(scenario: dict[str, Any], mode: str) -> bool:
+    scenario_mode = str(scenario.get("mode") or "both").lower()
+    return scenario_mode in ("both", "any") or scenario_mode == mode
+
+
+def _matches_profile(scenario: dict[str, Any], run_profile: str) -> bool:
+    scenario_profile = str(scenario.get("run_profile") or "both").lower()
+    if run_profile == "both":
+        return True
+    return scenario_profile in ("both", run_profile)
+
+
+def _select_scenarios(
+    data: dict[str, Any],
+    work_item: str | None,
+    scenario: str | None,
+    max_cases: int,
+    mode: str,
+    run_profile: str,
+) -> list[dict[str, Any]]:
     scenarios = data.get("scenarios", [])
     if not isinstance(scenarios, list):
         return []
@@ -165,12 +213,90 @@ def _select_scenarios(data: dict[str, Any], feature: str | None, scenario: str |
             continue
         if not s.get("enabled", True):
             continue
-        if feature and s.get("feature") != feature:
+        scenario_work_item = s.get("work_item") or s.get("feature")
+        if work_item and scenario_work_item != work_item:
             continue
         if scenario and s.get("id") != scenario:
             continue
+        if not _matches_mode(s, mode):
+            continue
+        if not _matches_profile(s, run_profile):
+            continue
         out.append(s)
     return out[: max(1, max_cases)]
+
+
+def _scenario_budget_values(scenarios: list[dict[str, Any]], key: str) -> list[Any]:
+    values: list[Any] = []
+    for scenario in scenarios:
+        budgets = scenario.get("budgets") or {}
+        if isinstance(budgets, dict) and budgets.get(key) is not None:
+            values.append(budgets[key])
+    return values
+
+
+def _resolve_int_budget(
+    cli_value: int | None,
+    scenarios: list[dict[str, Any]],
+    key: str,
+    default: int,
+) -> int:
+    if cli_value is not None:
+        return cli_value
+    values = [int(v) for v in _scenario_budget_values(scenarios, key) if isinstance(v, (int, float))]
+    return min(values) if values else default
+
+
+def _resolve_float_budget(
+    cli_value: float | None,
+    scenarios: list[dict[str, Any]],
+    key: str,
+) -> float | None:
+    if cli_value is not None:
+        return cli_value
+    values = [
+        float(v)
+        for v in _scenario_budget_values(scenarios, key)
+        if isinstance(v, (int, float))
+    ]
+    return min(values) if values else None
+
+
+def _command_string() -> str:
+    return " ".join(shlex.quote(part) for part in sys.argv)
+
+
+def _provider_stats(scenarios: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    stats: dict[str, dict[str, Any]] = {}
+    for scenario in scenarios:
+        providers = scenario.get("providers") or []
+        if not isinstance(providers, list) or not providers:
+            key = "unspecified"
+            stats.setdefault(key, {"provider": None, "model": None, "cases": 0})
+            stats[key]["cases"] += 1
+            continue
+        for provider_entry in providers:
+            if not isinstance(provider_entry, dict):
+                continue
+            provider = provider_entry.get("provider")
+            model = provider_entry.get("model")
+            key = f"{provider or 'unknown'}:{model or 'unknown'}"
+            stats.setdefault(key, {"provider": provider, "model": model, "cases": 0})
+            stats[key]["cases"] += 1
+    return stats
+
+
+def _selected_ids(scenarios: list[dict[str, Any]]) -> list[str]:
+    return [str(s.get("id", "unknown")) for s in scenarios]
+
+
+def _fixture_paths(scenarios: list[dict[str, Any]]) -> list[str]:
+    fixtures = []
+    for scenario in scenarios:
+        fixture = scenario.get("dataset_fixture")
+        if fixture:
+            fixtures.append(str(fixture))
+    return fixtures
 
 
 def _detect_bucket(stderr: str, returncode: int | None, timed_out: bool) -> str:
@@ -292,9 +418,80 @@ def _pick_exit_bucket(buckets: list[str]) -> str:
     return "internal_error"
 
 
+def _write_run_level_failure(
+    output_dir: Path,
+    bucket: str,
+    mode: str,
+    run_profile: str,
+    work_item: str | None,
+    errors: list[str],
+    start_ts: float,
+) -> None:
+    case_id = bucket
+    case_payload = {
+        "case_id": case_id,
+        "status": "failed",
+        "failure_bucket": bucket,
+        "secondary_buckets": [],
+        "input_pointer": None,
+        "input_hash": None,
+        "request_params": {},
+        "entrypoint": [],
+        "fixture": None,
+        "returncode": None,
+        "elapsed_sec": 0.0,
+        "raw_response": None,
+        "parsed_output": None,
+        "validation": {"schema": False, "invariants": False},
+        "stdout": "",
+        "stderr": "\n".join(errors),
+    }
+    _write_json(output_dir / "cases" / f"{case_id}.json", case_payload)
+    _write_json(
+        output_dir / "summary.json",
+        {
+            "artifact_version": ARTIFACT_VERSION,
+            "status": "failed",
+            "mode": mode,
+            "run_profile": run_profile,
+            "work_item": work_item,
+            "command": _command_string(),
+            "artifact_path": str(output_dir),
+            "selected_scenarios": [],
+            "fixtures": [],
+            "provider_stats": {},
+            "budgets": {
+                "time_budget_sec": DEFAULT_TIME_BUDGET_SEC,
+                "max_requests": DEFAULT_MAX_REQUESTS,
+                "max_tokens": DEFAULT_MAX_TOKENS,
+                "max_tokens_total": DEFAULT_MAX_TOKENS_TOTAL,
+                "cost_ceiling_usd": None,
+                "requests_used": 0,
+                "time_budget_exceeded": False,
+            },
+            "record": False,
+            "counts": {bucket: 1},
+            "failure_bucket": bucket,
+            "errors": errors,
+            "cases_total": 0,
+            "case_artifacts": [str(output_dir / "cases" / f"{case_id}.json")],
+        },
+    )
+    _write_json(
+        output_dir / "timing.json",
+        {
+            "wall_clock_sec": time.perf_counter() - start_ts,
+            "started_at_utc": datetime.now(timezone.utc).isoformat(),
+            "cmd": _command_string(),
+        },
+    )
+
+
 def main() -> int:
     args = _build_parser().parse_args()
     mode = args.mode or _default_mode()
+    run_profile = args.run_profile
+    work_item = args.work_item or args.feature
     start_ts = time.perf_counter()
 
     output_dir = Path(args.output_dir or f"artifacts/smoke/{_now_stamp()}")
@@ -309,60 +506,71 @@ def main() -> int:
     except FileNotFoundError as exc:
         errors.append(str(exc))
         bucket = "config_error"
-        _write_json(
-            output_dir / "summary.json",
-            {
-                "artifact_version": ARTIFACT_VERSION,
-                "mode": mode,
-                "status": "failed",
-                "failure_bucket": bucket,
-                "errors": errors,
-                "counts": {bucket: 1},
-            },
-        )
+        _write_run_level_failure(output_dir, bucket, mode, run_profile, work_item, errors, start_ts)
         (output_dir / "stdout.txt").write_text("\n".join(logs) + "\n", encoding="utf-8")
         (output_dir / "stderr.txt").write_text("\n".join(errors) + "\n", encoding="utf-8")
-        _write_json(output_dir / "timing.json", {"wall_clock_sec": time.perf_counter() - start_ts})
         return EXIT_CODES[bucket]
     except Exception as exc:  # pragma: no cover - template guard
         errors.append(str(exc))
         bucket = "internal_error"
-        _write_json(
-            output_dir / "summary.json",
-            {
-                "artifact_version": ARTIFACT_VERSION,
-                "mode": mode,
-                "status": "failed",
-                "failure_bucket": bucket,
-                "errors": errors,
-                "counts": {bucket: 1},
-            },
-        )
+        _write_run_level_failure(output_dir, bucket, mode, run_profile, work_item, errors, start_ts)
         (output_dir / "stdout.txt").write_text("\n".join(logs) + "\n", encoding="utf-8")
         (output_dir / "stderr.txt").write_text("\n".join(errors) + "\n", encoding="utf-8")
-        _write_json(output_dir / "timing.json", {"wall_clock_sec": time.perf_counter() - start_ts})
         return EXIT_CODES[bucket]
 
-    selected = _select_scenarios(registry, args.feature, args.scenario, args.max_cases)
+    selected = _select_scenarios(
+        registry,
+        work_item,
+        args.scenario,
+        args.max_cases,
+        mode,
+        run_profile,
+    )
     if not selected:
         errors.append("No enabled scenarios matched filters")
+
+    effective_time_budget_sec = _resolve_int_budget(
+        args.time_budget_sec,
+        selected,
+        "time_budget_sec",
+        DEFAULT_TIME_BUDGET_SEC,
+    )
+    effective_max_requests = _resolve_int_budget(
+        args.max_requests,
+        selected,
+        "max_requests",
+        DEFAULT_MAX_REQUESTS,
+    )
+    effective_max_tokens = int(args.max_tokens or DEFAULT_MAX_TOKENS)
+    effective_max_tokens_total = _resolve_int_budget(
+        args.max_tokens_total,
+        selected,
+        "max_tokens_total",
+        DEFAULT_MAX_TOKENS_TOTAL,
+    )
+    effective_cost_ceiling_usd = _resolve_float_budget(
+        args.cost_ceiling_usd,
+        selected,
+        "cost_ceiling_usd",
+    )
 
     case_buckets: list[str] = []
     requests_used = 0
     budget_exceeded = False
-    run_deadline = start_ts + float(args.time_budget_sec)
+    case_artifacts: list[str] = []
+    run_deadline = start_ts + float(effective_time_budget_sec)
     for scen in selected:
-        if requests_used >= args.max_requests:
+        if requests_used >= effective_max_requests:
             budget_exceeded = True
             errors.append(
-                f"max_requests exceeded: used={requests_used}, limit={args.max_requests}"
+                f"max_requests exceeded: used={requests_used}, limit={effective_max_requests}"
             )
             case_buckets.append("budget_exceeded")
             break
         if time.perf_counter() > run_deadline:
             budget_exceeded = True
             errors.append(
-                f"time_budget_sec exceeded before case execution: limit={args.time_budget_sec}"
+                f"time_budget_sec exceeded before case execution: limit={effective_time_budget_sec}"
             )
             case_buckets.append("budget_exceeded")
             break
@@ -373,35 +581,90 @@ def main() -> int:
         result = _run_case(scen, case_timeout_sec, args.redact_secrets == "true")
         requests_used += 1
         case_buckets.append(result.failure_bucket)
+        case_path = output_dir / "cases" / f"{result.case_id}.json"
+        request_params = scen.get("request_defaults") or {}
         _write_json(
-            output_dir / "cases" / f"{result.case_id}.json",
+            case_path,
             {
                 "case_id": result.case_id,
                 "status": result.status,
                 "failure_bucket": result.failure_bucket,
                 "secondary_buckets": result.secondary_buckets,
+                "input_pointer": result.fixture,
+                "input_hash": None,
+                "request_params": request_params if isinstance(request_params, dict) else {},
                 "entrypoint": result.entrypoint,
                 "fixture": result.fixture,
                 "returncode": result.returncode,
                 "elapsed_sec": result.elapsed_sec,
+                "raw_response": result.stdout,
                 "stdout": result.stdout,
                 "stderr": result.stderr,
                 "parsed_output": result.parsed_output,
                 "validation": result.validation,
             },
         )
+        case_artifacts.append(str(case_path))
         if time.perf_counter() > run_deadline:
             budget_exceeded = True
             errors.append(
-                f"time_budget_sec exceeded after case execution: limit={args.time_budget_sec}"
+                f"time_budget_sec exceeded after case execution: limit={effective_time_budget_sec}"
             )
             case_buckets.append("budget_exceeded")
             break
 
     if errors and not case_buckets:
         case_buckets.append("config_error")
+        case_path = output_dir / "cases" / "config_error.json"
+        _write_json(
+            case_path,
+            {
+                "case_id": "config_error",
+                "status": "failed",
+                "failure_bucket": "config_error",
+                "secondary_buckets": [],
+                "input_pointer": None,
+                "input_hash": None,
+                "request_params": {},
+                "entrypoint": [],
+                "fixture": None,
+                "returncode": None,
+                "elapsed_sec": 0.0,
+                "raw_response": None,
+                "stdout": "",
+                "stderr": "\n".join(errors),
+                "parsed_output": None,
+                "validation": {"schema": False, "invariants": False},
+            },
+        )
+        case_artifacts.append(str(case_path))
 
     chosen_bucket = _pick_exit_bucket(case_buckets)
+
+    if case_buckets and not case_artifacts:
+        case_path = output_dir / "cases" / f"{chosen_bucket}.json"
+        _write_json(
+            case_path,
+            {
+                "case_id": chosen_bucket,
+                "status": "failed",
+                "failure_bucket": chosen_bucket,
+                "secondary_buckets": [],
+                "input_pointer": None,
+                "input_hash": None,
+                "request_params": {},
+                "entrypoint": [],
+                "fixture": None,
+                "returncode": None,
+                "elapsed_sec": 0.0,
+                "raw_response": None,
+                "stdout": "",
+                "stderr": "\n".join(errors),
+                "parsed_output": None,
+                "validation": {"schema": False, "invariants": False},
+            },
+        )
+        case_artifacts.append(str(case_path))
 
     counts: dict[str, int] = {}
     for b in case_buckets:
@@ -411,13 +674,21 @@ def main() -> int:
         "artifact_version": ARTIFACT_VERSION,
         "status": "passed" if chosen_bucket == "pass" and not errors else "failed",
         "mode": mode,
-        "feature": args.feature,
+        "run_profile": run_profile,
+        "work_item": work_item,
         "scenario": args.scenario,
         "providers_override": args.providers,
+        "command": _command_string(),
+        "artifact_path": str(output_dir),
+        "selected_scenarios": _selected_ids(selected),
+        "fixtures": _fixture_paths(selected),
+        "provider_stats": _provider_stats(selected),
         "budgets": {
-            "time_budget_sec": args.time_budget_sec,
-            "max_requests": args.max_requests,
-            "max_tokens": args.max_tokens,
+            "time_budget_sec": effective_time_budget_sec,
+            "max_requests": effective_max_requests,
+            "max_tokens": effective_max_tokens,
+            "max_tokens_total": effective_max_tokens_total,
+            "cost_ceiling_usd": effective_cost_ceiling_usd,
             "requests_used": requests_used,
             "time_budget_exceeded": budget_exceeded,
         },
@@ -426,6 +697,7 @@ def main() -> int:
         "failure_bucket": chosen_bucket,
         "errors": errors,
         "cases_total": len(selected),
+        "case_artifacts": case_artifacts,
     }
 
     _write_json(output_dir / "summary.json", summary)
@@ -436,7 +708,7 @@ def main() -> int:
         {
             "wall_clock_sec": time.perf_counter() - start_ts,
             "started_at_utc": datetime.now(timezone.utc).isoformat(),
-            "cmd": " ".join(shlex.quote(part) for part in sys.argv),
+            "cmd": _command_string(),
         },
     )
 
